@@ -31,7 +31,6 @@ const { title } = Astro.props;
           <a
             href="https://github.com/mcittkmims/extension/releases/latest"
             class="nav-btn"
-            target="_blank"
             rel="noopener"
             data-get-extension
           >
@@ -99,6 +98,7 @@ const { title } = Astro.props;
         links.forEach((link) => {
           link.setAttribute("href", href);
           link.setAttribute("title", title);
+          link.removeAttribute("target");
         });
       };
 
@@ -118,7 +118,7 @@ const { title } = Astro.props;
         const asset = await getLatestAsset();
 
         if (!asset?.id) {
-          window.open(fallbackUrl, "_blank", "noopener");
+          window.location.href = fallbackUrl;
           return;
         }
 
@@ -132,7 +132,7 @@ const { title } = Astro.props;
           const blob = await response.blob();
           triggerBlobDownload(blob, asset.name);
         } catch {
-          window.open(asset.browser_download_url || fallbackUrl, "_blank", "noopener");
+          window.location.href = asset.browser_download_url || fallbackUrl;
         }
       };
 
