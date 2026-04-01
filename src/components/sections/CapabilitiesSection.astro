@@ -1,0 +1,53 @@
+---
+---
+
+<section class="section" id="capabilities">
+  <div class="section-inner">
+    <p class="section-label">Capabilities</p>
+    <h2 class="section-title">Everything behind the 20&nbsp;px button</h2>
+    <div class="capabilities-grid">
+      <div class="cap-card">
+        <h3>7 AI Providers</h3>
+        <p>Google AI Studio, Vertex AI, OpenAI, Anthropic, OpenRouter, Grok, and local OpenCode servers. Switch between them without leaving the page.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Quiz Auto-Answer</h3>
+        <p>Press Alt+Q to screenshot the current page. The AI detects question types &mdash; single choice, multiple choice, dropdowns, text inputs &mdash; and provides precise answers.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Image Analysis</h3>
+        <p>Drag-and-drop or attach images directly in the chat. Sent as base64 to the selected provider for analysis, diagram explanation, or code reading.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Persistent History</h3>
+        <p>Conversation history survives page navigations and browser restarts. Full context is optionally sent with each new request.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Automatic Dark Mode</h3>
+        <p>Detects page background luminance and switches to a full dark theme automatically. Complete zinc palette for both light and dark surfaces.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Markdown + LaTeX</h3>
+        <p>Responses render with full markdown &mdash; code blocks, tables, lists, blockquotes &mdash; plus KaTeX for inline and display math expressions.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Drag &amp; Resize</h3>
+        <p>The floating button is draggable anywhere on screen. The chatbox resizes from any of its four corners. All positions persist in storage.</p>
+      </div>
+      <div class="cap-card">
+        <h3>Zero Data Footprint</h3>
+        <p>No external data transmission except to your chosen AI API. All settings, history, and positions live only in browser local storage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .capabilities-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+  .cap-card { padding: 20px; border: 1px solid #e4e4e7; border-radius: 10px; background: #fff; }
+  .cap-card h3 { font-size: 14px; font-weight: 600; color: #18181b; margin-bottom: 8px; }
+  .cap-card p { font-size: 12px; color: #71717a; line-height: 1.6; }
+
+  @media (max-width: 960px) { .capabilities-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .capabilities-grid { grid-template-columns: 1fr; } }
+</style>

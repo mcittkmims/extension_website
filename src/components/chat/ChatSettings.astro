@@ -1,0 +1,43 @@
+---
+---
+<div class="dc-settings" id="demo-settings-panel">
+  <label class="dc-toggle-row">
+    <span class="dc-toggle-copy">
+      <span class="dc-toggle-label">Keep conversation context</span>
+      <span class="dc-hint">Turn off to auto-reset chat history before each request.</span>
+    </span>
+    <span class="dc-toggle-switch">
+      <input type="checkbox" checked />
+      <span class="dc-toggle-slider"></span>
+    </span>
+  </label>
+  <label class="dc-label">Provider</label>
+  <select class="dc-select">
+    <option>Google AI Studio</option>
+    <option>Vertex AI (Google Cloud)</option>
+    <option>OpenAI (GPT)</option>
+    <option>Anthropic (Claude)</option>
+    <option>OpenRouter</option>
+    <option>Grok (xAI)</option>
+    <option>OpenCode (local)</option>
+  </select>
+  <label class="dc-label dc-mt">Model</label>
+  <select class="dc-select">
+    <option>gemini-2.5-flash</option>
+    <option>gemini-2.5-pro</option>
+    <option>gemini-2.0-flash</option>
+  </select>
+  <label class="dc-label dc-mt">API Key</label>
+  <input type="text" class="dc-input" placeholder="Enter API key..." style="-webkit-text-security:disc" readonly />
+  <small class="dc-hint">Key for the selected AI provider</small>
+  <label class="dc-label dc-mt">Chat Opacity</label>
+  <div class="dc-slider-row">
+    <input type="range" min="5" max="100" step="5" value="95" class="dc-range" />
+    <span class="dc-slider-value">95%</span>
+  </div>
+  <label class="dc-label dc-mt">Button Opacity</label>
+  <div class="dc-slider-row">
+    <input type="range" min="5" max="100" step="5" value="60" class="dc-range" />
+    <span class="dc-slider-value">60%</span>
+  </div>
+</div>

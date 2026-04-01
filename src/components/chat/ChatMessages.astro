@@ -1,0 +1,27 @@
+---
+---
+<div class="dc-messages">
+  <div class="dc-msg dc-msg-user">What is the time complexity of quicksort?</div>
+  <div class="dc-msg dc-msg-bot">
+    <div class="dc-msg-badge">gemini-2.5-flash</div>
+    <h3>Quicksort Time Complexity</h3>
+    <ul>
+      <li><strong>Best case:</strong> O(n log n) &mdash; when the pivot divides the array roughly in half each time.</li>
+      <li><strong>Average case:</strong> O(n log n) &mdash; expected performance with random input.</li>
+      <li><strong>Worst case:</strong> O(n<sup>2</sup>) &mdash; occurs when the pivot is always the smallest or largest element.</li>
+    </ul>
+    <p>The worst case can be mitigated using <strong>randomized pivot selection</strong> or the <strong>median-of-three</strong> strategy.</p>
+  </div>
+  <div class="dc-msg dc-msg-user">Show me an implementation</div>
+  <div class="dc-msg dc-msg-bot">
+    <div class="dc-msg-badge">gemini-2.5-flash</div>
+    <pre><code>def quicksort(arr):
+    if len(arr) &lt;= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x &lt; pivot]
+    mid = [x for x in arr if x == pivot]
+    right = [x for x in arr if x &gt; pivot]
+    return quicksort(left) + mid + quicksort(right)</code></pre>
+  </div>
+</div>

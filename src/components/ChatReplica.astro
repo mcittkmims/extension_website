@@ -1,0 +1,150 @@
+---
+import ChatSettings from "./chat/ChatSettings.astro";
+import ChatMessages from "./chat/ChatMessages.astro";
+import ChatInputArea from "./chat/ChatInputArea.astro";
+---
+
+<div class="demo-chat-wrapper">
+  <button class="demo-float-btn" id="demo-toggle-btn" title="Clipboard (Alt+C)">
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+    </svg>
+  </button>
+
+  <div class="demo-chatbox open" id="demo-chatbox">
+    <header class="dc-header">
+      <span class="dc-title">Clipboard</span>
+      <div class="dc-header-actions">
+        <button class="dc-btn-icon" id="demo-settings-toggle" title="Settings">&#9881;</button>
+        <button class="dc-btn-icon dc-close" id="demo-close-btn" title="Close">&times;</button>
+      </div>
+    </header>
+    <ChatSettings />
+    <ChatMessages />
+    <ChatInputArea />
+  </div>
+</div>
+
+<style is:global>
+  @import "../styles/chatbox.css";
+</style>
+
+<script>
+  const btn            = document.getElementById("demo-toggle-btn")      as HTMLElement | null;
+  const box            = document.getElementById("demo-chatbox")         as HTMLElement | null;
+  const closeBtn       = document.getElementById("demo-close-btn")       as HTMLElement | null;
+  const settingsToggle = document.getElementById("demo-settings-toggle") as HTMLElement | null;
+  const settingsPanel  = document.getElementById("demo-settings-panel")  as HTMLElement | null;
+  const wrapper        = btn?.closest(".demo-chat-wrapper")              as HTMLElement | null;
+
+  if (!btn || !box || !closeBtn || !settingsToggle || !settingsPanel || !wrapper) {
+    console.warn("ChatReplica init skipped: missing required demo element(s).");
+  } else {
+
+  const GAP    = 6;
+  const MARGIN = 4;
+
+  let isOpen     = true;
+  let isDragging = false;
+  let dragMoved  = false;
+  let dragStartX = 0, dragStartY = 0;
+  let btnStartL  = 0, btnStartT  = 0;
+
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+
+  function layout(wantL: number, wantT: number) {
+    const W  = wrapper.offsetWidth;
+    const H  = wrapper.offsetHeight;
+    const bw = btn.offsetWidth  || 20;
+    const bh = btn.offsetHeight || 20;
+    const boxW = box.offsetWidth;
+    const boxH = box.offsetHeight;
+
+    const btnL = clamp(wantL, MARGIN, W - bw - MARGIN);
+    const btnT = clamp(wantT, MARGIN, H - bh - MARGIN);
+    btn.style.left = btnL + "px";
+    btn.style.top  = btnT + "px";
+
+    if (!isOpen) return;
+
+    const spaceAbove = btnT - GAP - MARGIN;
+    const spaceBelow = H - (btnT + bh + GAP) - MARGIN;
+    const goAbove = spaceAbove >= boxH
+      ? true
+      : spaceBelow >= boxH
+        ? false
+        : spaceAbove >= spaceBelow;
+
+    const chatT = goAbove
+      ? clamp(btnT - boxH - GAP, MARGIN, H - boxH - MARGIN)
+      : clamp(btnT + bh + GAP,   MARGIN, H - boxH - MARGIN);
+
+    const btnCX = btnL + bw / 2;
+    const chatL = clamp(
+      btnCX < W / 2 ? btnL : btnL + bw - boxW,
+      MARGIN,
+      W - boxW - MARGIN
+    );
+
+    box.style.left = chatL + "px";
+    box.style.top  = chatT + "px";
+  }
+
+  function init() {
+    const W  = wrapper.offsetWidth;
+    const H  = wrapper.offsetHeight;
+    const bw = btn.offsetWidth  || 20;
+    const bh = btn.offsetHeight || 20;
+    btn.style.position = "absolute";
+    btn.style.right    = "auto";
+    btn.style.bottom   = "auto";
+    box.style.position = "absolute";
+    box.style.right    = "auto";
+    box.style.bottom   = "auto";
+    layout(W - bw - MARGIN, H - bh - MARGIN);
+  }
+
+    requestAnimationFrame(init);
+
+    settingsToggle.addEventListener("click", () => settingsPanel.classList.toggle("visible"));
+    closeBtn.addEventListener("click", () => {
+      isOpen = false;
+      box.classList.remove("open");
+      btn.classList.remove("active");
+    });
+
+    btn.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0 && e.pointerType === "mouse") return;
+      e.preventDefault();
+      btn.setPointerCapture(e.pointerId);
+      isDragging = true;
+      dragMoved  = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      btnStartL  = btn.offsetLeft;
+      btnStartT  = btn.offsetTop;
+    });
+
+    document.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      if (!dragMoved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) dragMoved = true;
+      if (!dragMoved) return;
+      btn.style.cursor = "grabbing";
+      layout(btnStartL + dx, btnStartT + dy);
+    });
+
+    document.addEventListener("pointerup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      btn.style.cursor = "";
+      if (dragMoved) { dragMoved = false; return; }
+      isOpen = !isOpen;
+      box.classList.toggle("open", isOpen);
+      btn.classList.toggle("active", isOpen);
+      layout(btn.offsetLeft, btn.offsetTop);
+    });
+  }
+</script>

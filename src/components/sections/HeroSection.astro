@@ -1,0 +1,54 @@
+---
+import PopupReplica from "../PopupReplica.astro";
+---
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="section-label">Firefox Extension</p>
+      <h1>A clipboard manager.<br /><span class="hero-dim">Or so it seems.</span></h1>
+      <p class="hero-sub">
+        On the surface, it saves your clipboard history. Underneath, it runs a full AI chat
+        assistant with multi-provider support, quiz auto-answer, and image analysis &mdash; all hidden
+        behind a 20&nbsp;pixel button.
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/mcittkmims/extension" class="btn-primary" target="_blank" rel="noopener">Install Extension</a>
+        <a href="#demo" class="btn-secondary">See it in action</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <PopupReplica />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: 140px 24px 80px;
+    background: #fafafa;
+    border-bottom: 1px solid #e4e4e7;
+  }
+  .hero-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-dim { color: #a1a1aa; }
+  .hero h1 { font-size: 40px; font-weight: 700; line-height: 1.15; color: #18181b; margin-bottom: 20px; }
+  .hero-sub { font-size: 15px; color: #52525b; line-height: 1.7; max-width: 480px; margin-bottom: 32px; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-visual { display: flex; justify-content: center; }
+
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { order: -1; }
+    .hero h1 { font-size: 32px; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding: 100px 24px 60px; }
+  }
+</style>

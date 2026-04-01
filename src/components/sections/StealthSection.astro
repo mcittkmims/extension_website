@@ -1,0 +1,63 @@
+---
+---
+
+<section class="section section-alt">
+  <div class="section-inner stealth-inner">
+    <div class="stealth-text">
+      <p class="section-label">By design</p>
+      <h2 class="section-title">Built to be invisible</h2>
+      <p>
+        The extension installs as "Clipboard Manager" with a generic clipboard icon. The toolbar
+        popup is a fully functional clipboard history tool. Nothing about the store listing hints
+        at what is underneath.
+      </p>
+      <p>
+        The chat button is 20 pixels wide, semi-transparent at 60% opacity by default, and
+        positioned at the edge of the viewport. The chatbox itself can be dialed down to 5%
+        opacity. Every element uses z-index layering to avoid interfering with page content.
+      </p>
+      <p>
+        Keyboard shortcuts (Alt+C, Alt+Q) let you operate without clicking anything. The
+        manifest, description, and declared permissions all read like a standard text utility.
+      </p>
+    </div>
+    <div class="stealth-visual">
+      <div class="stealth-manifest">
+        <div class="manifest-header">manifest.json</div>
+        <pre><code>{`{
+  "manifest_version": 2,
+  "name": "Clipboard Manager",
+  "version": "4.2.2",
+  "description": "Simple clipboard history
+    and text snippets manager",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clipboard-manager@tools.browser"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ]
+}`}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stealth-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .stealth-text p { font-size: 14px; color: #52525b; line-height: 1.7; margin-bottom: 16px; }
+  .stealth-text p:last-child { margin-bottom: 0; }
+  .stealth-manifest { border: 1px solid #e4e4e7; border-radius: 10px; overflow: hidden; background: #fafafa; }
+  .manifest-header {
+    padding: 10px 16px; font-size: 12px; font-weight: 500; color: #71717a;
+    background: #f4f4f5; border-bottom: 1px solid #e4e4e7;
+    font-family: ui-monospace, "SF Mono", "Fira Code", monospace;
+  }
+  .stealth-manifest pre { padding: 16px; margin: 0; overflow-x: auto; }
+  .stealth-manifest code { font-family: ui-monospace, "SF Mono", "Fira Code", monospace; font-size: 12px; line-height: 1.6; color: #3f3f46; }
+
+  @media (max-width: 960px) { .stealth-inner { grid-template-columns: 1fr; gap: 40px; } }
+</style>
