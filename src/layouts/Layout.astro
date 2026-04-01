@@ -54,6 +54,7 @@ const { title } = Astro.props;
       const releaseApi = "https://api.github.com/repos/mcittkmims/extension/releases/latest";
       const fallbackUrl = "https://github.com/mcittkmims/extension/releases/latest";
       const links = document.querySelectorAll("[data-get-extension]");
+      let cachedAsset = null;
 
       const preferredAsset = (assets) => {
         if (!Array.isArray(assets) || assets.length === 0) return null;
@@ -70,25 +71,72 @@ const { title } = Astro.props;
         return scored[0]?.asset ?? null;
       };
 
-      const applyDownloadLink = async () => {
+      const getLatestAsset = async () => {
+        if (cachedAsset) return cachedAsset;
         try {
           const response = await fetch(releaseApi, { headers: { Accept: "application/vnd.github+json" } });
-          if (!response.ok) return;
+          if (!response.ok) return null;
 
           const release = await response.json();
           const asset = preferredAsset(release?.assets);
-          const href = asset?.browser_download_url || fallbackUrl;
-          const title = asset?.name ? `Download ${asset.name}` : "Download latest extension release";
-
-          links.forEach((link) => {
-            link.setAttribute("href", href);
-            link.setAttribute("title", title);
-          });
+          cachedAsset = asset
+            ? {
+                id: asset.id,
+                name: asset.name || "extension-release",
+                browser_download_url: asset.browser_download_url,
+              }
+            : null;
+          return cachedAsset;
         } catch {
-          // Keep fallback URL if GitHub API is unavailable.
+          return null;
         }
       };
 
+      const applyDownloadLink = async () => {
+        const asset = await getLatestAsset();
+        const href = asset?.browser_download_url || fallbackUrl;
+        const title = asset?.name ? `Download ${asset.name}` : "Download latest extension release";
+        links.forEach((link) => {
+          link.setAttribute("href", href);
+          link.setAttribute("title", title);
+        });
+      };
+
+      const triggerBlobDownload = (blob, filename) => {
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = filename || "extension-release";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 30000);
+      };
+
+      const downloadLatestRelease = async (event) => {
+        event.preventDefault();
+        const asset = await getLatestAsset();
+
+        if (!asset?.id) {
+          window.open(fallbackUrl, "_blank", "noopener");
+          return;
+        }
+
+        try {
+          const assetApi = `https://api.github.com/repos/mcittkmims/extension/releases/assets/${asset.id}`;
+          const response = await fetch(assetApi, {
+            headers: { Accept: "application/octet-stream" },
+          });
+          if (!response.ok) throw new Error("Asset download request failed");
+
+          const blob = await response.blob();
+          triggerBlobDownload(blob, asset.name);
+        } catch {
+          window.open(asset.browser_download_url || fallbackUrl, "_blank", "noopener");
+        }
+      };
+
+      links.forEach((link) => link.addEventListener("click", downloadLatestRelease));
       applyDownloadLink();
     </script>
   </body>
