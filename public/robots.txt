@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://extension.chillguys.studio/sitemap-index.xml

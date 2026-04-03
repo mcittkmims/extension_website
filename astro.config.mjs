@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 const customDomain = process.env.CUSTOM_DOMAIN;
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? '';
@@ -18,4 +19,4 @@ const base = customDomain || !isGithubActions || isUserSite
   : `/${repo}/`;
 
 // https://astro.build/config
-export default defineConfig({ site, base });
+export default defineConfig({ site, base, integrations: [sitemap()] });
