@@ -136,6 +136,20 @@ import ChatInputArea from "./chat/ChatInputArea.astro";
       layout(btnStartL + dx, btnStartT + dy);
     });
 
+    const ranges = settingsPanel.querySelectorAll<HTMLInputElement>(".dc-range");
+    const [chatRange, btnRange] = ranges;
+    const values = settingsPanel.querySelectorAll<HTMLElement>(".dc-slider-value");
+    const [chatVal, btnVal] = values;
+
+    function applyOpacity() {
+      box.style.opacity = String(Number(chatRange.value) / 100);
+      btn.style.opacity = String(Number(btnRange.value) / 100);
+    }
+
+    chatRange.addEventListener("input", () => { chatVal.textContent = chatRange.value + "%"; applyOpacity(); });
+    btnRange.addEventListener("input",  () => { btnVal.textContent  = btnRange.value  + "%"; applyOpacity(); });
+    applyOpacity();
+
     document.addEventListener("pointerup", () => {
       if (!isDragging) return;
       isDragging = false;
